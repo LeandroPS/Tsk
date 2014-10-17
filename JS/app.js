@@ -39,22 +39,6 @@ var listaGeral = [{'id': 1,
                   {'id': 2,
                   'title': "Teste",
                   'date': new Date(2014,9,20),
-                  'checked': false},
-                  {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
-                  'checked': false},
-                  {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
-                  'checked': false},
-                  {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
-                  'checked': false},
-                  {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
                   'checked': false}
                  ]
 
@@ -82,10 +66,8 @@ var listaGeral = [{'id': 1,
         $("span.month-name").text(monthList[month]);
         
         $("ul.tasks-list").empty();
-        //alert(listaGeral.length);
-        //alert("1");
+
         for(i=0;i<listaGeral.length;i++){
-            //alert(listaGeral[i].date);
             if(listaGeral[i].date.getMonth()==month){
                 c++;
                 //if()
@@ -99,25 +81,25 @@ var listaGeral = [{'id': 1,
 
 
     function adjustCalendar(month, year){
-        //date = new Date();
         first = new Date(year, month, 1);
         disc = first.getDay();
         d = new Date(year,month,0).getDate();
-        //alert(d); 
+
         c=0;
         for(i=1; i<=d+1;i++){
             $("table.calendar td").eq(i+disc+1).html(i);
         }
-        //alert(d);
-        updateMonthList(month);
-        //$("ul").append("<li class='add-a-task'>+ Add a task</li>");
-        
+
+        updateMonthList(month);      
     }
 
 $(function(){
     dat = new Date();
     adjustCalendar(dat.getMonth(), dat.getYear());
-    
+    cYear = dat.getYear();
+    cMonth = dat.getMonth();
+    cDay = dat.getDay();
+
     $("div.add-a-task").click(function(){
         if($("ul.tasks-list li.new-task").length){
             $("ul.tasks-list li.new-task input.new-task-text").focus();
@@ -128,16 +110,24 @@ $(function(){
             window.scrollTo(0,document.body.scrollHeight);
         }
     });
-    
-  $("ul.tasks-list").on("keypress", "input.new-task-text", function(e) {
-      //alert("2");
+
+    $("ul.tasks-list").on("keypress", "input.new-task-text", function(e) {
       if(e.which==13){
           text = $(this).val();
           createTask(text, dat);
           updateMonthList(dat.getMonth());
           window.scrollTo(0,document.body.scrollHeight);
       }
+    });
     
-  });
+    $("table.calendar tr td").click(function(){
+        var day = $(this).text();
+        var d = new Date(cYear,cMonth,day);
+        
+        alert
+        
+        $("table.calendar").addClass("week-"+d.getWeekOfMonth());
+        $("div.calendar-area").height("67px");
+    });
     
 });

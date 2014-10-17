@@ -16,12 +16,18 @@ div.calendar-area{
     height: 255px;
     position: relative;
     overflow: hidden;
+    
+    -webkit-transition: height 1s;
+    transition: height 1s;
 }
 
 table.week-days{
     width:100%;
     text-align: center;
     border-collapse: collapse;
+    background-color: #fff;
+    position: relative;
+    z-index: 2;
 }
 
     table.week-days tr{
@@ -46,6 +52,10 @@ table.calendar {
     font-family: "Roboto Slab Light";
     
     position: absolute;
+    z-index: 1;
+    
+    -webkit-transition: top 1s;
+    transition: top 1s;
 }
 
     table.calendar tr td{
