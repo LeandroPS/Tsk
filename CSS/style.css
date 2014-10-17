@@ -1,0 +1,159 @@
+@font-face{
+    font-family: "Roboto Slab";
+    src: url(../Fonts/Roboto_Slab/RobotoSlab-Regular.ttf);
+}
+
+@font-face{
+    font-family: "Roboto Slab Light";
+    src: url(../Fonts/Roboto_Slab/RobotoSlab-Light.ttf);
+}
+
+body{
+    margin: 0 auto;
+}
+
+div.calendar-area{
+    height: 255px;
+    position: relative;
+    overflow: hidden;
+}
+
+table.week-days{
+    width:100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+    table.week-days tr{
+        height: 20px;
+        
+    }
+
+        table.week-days tr td{
+            border-bottom: 1px solid;
+            height: 20px;
+            font-family: "Roboto Slab";
+            width: 14.28%;
+        }
+
+table.calendar {
+    top: 23px;
+    
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    
+    font-family: "Roboto Slab Light";
+    
+    position: absolute;
+}
+
+    table.calendar tr td{
+        height: 44px;
+        width: 14.28%;
+    }
+
+    table.calendar.week-1{
+        top: 23px;
+    }
+
+    table.calendar.week-2{
+        top: -21px;
+    }
+
+    table.calendar.week-3{
+        top: -65px;
+    }
+
+    table.calendar.week-4{
+        top: -109px;
+    }
+
+    table.calendar.week-5{
+        top: -153px;
+    }
+
+    table.calendar.week-6{
+        top: -197px;
+    }
+
+
+.header {
+    height: 42px;
+    border-bottom: 1px solid;
+    text-align: center;
+}
+
+    .header span.month-name{
+        font-family: "Roboto Slab";
+        font-size: 16pt;
+        line-height: 42px;
+    }
+
+div.progress-area{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+    div.progress-area progress.progress{
+        width: 100%;
+        height: 15px;
+    }
+
+.menu {
+    background-image: url(../Images/logo.png);
+    background-size: 100%;
+    width: 42px;
+    height: 42px;
+    border: none;
+    background-color: transparent;
+    left: 10px;
+    position: absolute;
+}
+
+.no-tasks {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    line-height: 200px;
+    display: none;
+}
+
+ul.tasks-list {
+    padding-left: 0px;
+    margin-bottom: 55px;
+}
+
+    .tasks-list li{
+        list-style: none;
+        height: 40px;
+        line-height: 40px;
+        font-family: "Roboto Slab";
+        font-size: 12pt;
+    }
+        .tasks-list li:nth-child(odd){
+            background-color: #E8E8E8;
+        }
+    
+    ul.tasks-list input.new-task-text{
+        border: none;
+        background: transparent;
+        outline: 0;
+        line-height: 30px;
+        font-family: "Roboto Slab";
+        font-size: 12pt;
+    }
+
+    div.add-a-task{
+        height: 40px;
+        line-height: 40px;
+        width: 100%;
+        font-family: "Roboto Slab";
+        text-align: center;
+        background-color: #C8C8C8;
+        position: fixed;
+        bottom: 15px;
+        cursor: pointer;
+    }
+        
