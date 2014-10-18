@@ -127,7 +127,9 @@ $(function(){
         alert
         
         $("table.calendar").addClass("week-"+d.getWeekOfMonth());
-        $("div.calendar-area").height("67px");
+        $("div.calendar-area").height("71px");
+        $("table.calendar tr td").removeClass("chosen");
+        $(this).addClass("chosen");
     });
     
 });
