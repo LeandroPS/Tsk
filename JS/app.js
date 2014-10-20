@@ -25,21 +25,25 @@ function generateUUID(){
 //var myapp = angular.module("taask");
 
 var listaGeral = [{'id': 1,
-                  'title': "Teste",
+                  'title': "20 de Outubro",
                   'date': new Date(2014,9,20),
-                  'checked': false},
+                  'checked': false,
+                  'precision':'days'},
                   {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
-                  'checked': false},
+                  'title': "30 de outubro (precisão mês)",
+                  'date': new Date(2014,9,30),
+                  'checked': false,
+                  'precision':'days'},
                   {'id': 2,
-                  'title': "Teste",
+                  'title': "20 de Outubro 2",
                   'date': new Date(2014,9,20),
-                  'checked': false},
+                  'checked': false,
+                  'precision':'days'},
                   {'id': 2,
-                  'title': "Teste",
-                  'date': new Date(2014,9,20),
-                  'checked': false}
+                  'title': "20 de Outubro 3",
+                  'date': new Date(2014,10,20),
+                  'checked': false,
+                  'precision':'days'}
                  ]
 
 
@@ -59,44 +63,70 @@ var listaGeral = [{'id': 1,
 
     //function appendNode
     
-    function updateMonthList(month){
+    function updateMonthList(d/*month*/){
+        d.setMonth(d.getMonth()+1);
         var c = 0;
         var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        
-        $("span.month-name").text(monthList[month]);
+        //alert(d);
+        //$("span.month-name").text(monthList[month]);
+        $("span.month-name").text(monthList[d.getMonth()]);
         
         $("ul.tasks-list").empty();
 
         for(i=0;i<listaGeral.length;i++){
-            if(listaGeral[i].date.getMonth()==month){
+            //if(listaGeral[i].date.getMonth()==month){
+            if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 //if()
                 $("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
             }
         }
         if(c==0){
-            $("div.no-tasks").show();   
+            $("div.no-tasks").show();
+        }
+    }
+
+    function updateDayList(d){
+        var c = 0;
+        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        $("span.month-name").text(monthList[d.getMonth()]);
+        
+        $("ul.tasks-list").empty();
+
+        for(i=0;i<listaGeral.length;i++){
+            //if(listaGeral[i].date.getMonth()==month){
+            if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear() && listaGeral[i].date.getDate()==d.getDate()){
+                c++;
+                //if()
+                $("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
+            }
+        }
+        if(c==0){
+            $("div.no-tasks").fadeIn();
+        }else{
+           $("div.no-tasks").hide();
         }
     }
 
 
-    function adjustCalendar(month, year){
-        first = new Date(year, month, 1);
-        disc = first.getDay();
-        d = new Date(year,month,0).getDate();
-
+    function adjustCalendar(date){
+        date.setDate(1);
+        disc = date.getDay();
+        date.setDate(0);
+        d = date.getDate();
         c=0;
         for(i=1; i<=d+1;i++){
-            $("table.calendar td").eq(i+disc+1).html(i);
+            $("table.calendar td").eq(i+disc-1).html(i);
         }
-
-        updateMonthList(month);      
+        updateMonthList(date); 
     }
 
 $(function(){
     dat = new Date();
-    adjustCalendar(dat.getMonth(), dat.getYear());
-    cYear = dat.getYear();
+    //adjustCalendar(dat.getMonth(), dat.getFullYear());
+    adjustCalendar(dat);
+    cYear = dat.getFullYear();
     cMonth = dat.getMonth();
     cDay = dat.getDay();
 
@@ -123,13 +153,15 @@ $(function(){
     $("table.calendar tr td").click(function(){
         var day = $(this).text();
         var d = new Date(cYear,cMonth,day);
+        cDay = parseInt(day);
         
-        alert
-        
+        //alert(d.getWeekOfMonth());
         $("table.calendar").addClass("week-"+d.getWeekOfMonth());
         $("div.calendar-area").height("71px");
         $("table.calendar tr td").removeClass("chosen");
         $(this).addClass("chosen");
+        
+        updateDayList(d);
     });
     
 });
