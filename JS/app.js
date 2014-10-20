@@ -48,7 +48,7 @@ var listaGeral = [{'id': 1,
 
 
 
-    function createTask(title, date){
+    function createTask(title, date, precision){
         if(typeof(date)==undefined){
             
         }else{
@@ -57,7 +57,9 @@ var listaGeral = [{'id': 1,
         node = {  'id': generateUUID(),
                   'title': title,
                   'date': new Date(date),
-                  'checked': false};
+                  'checked': false,
+                  'precision': precision
+               };
         listaGeral.push(node);
     }
 
@@ -78,11 +80,13 @@ var listaGeral = [{'id': 1,
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 //if()
-                $("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
+                $("ul.tasks-list").append("<li><input id='"+listaGeral[i].id+"' type='checkbox'>"+listaGeral[i].title+"</li>");
             }
         }
         if(c==0){
             $("div.no-tasks").show();
+        }else{
+            $("div.no-tasks").hide();
         }
     }
 
@@ -122,13 +126,18 @@ var listaGeral = [{'id': 1,
         updateMonthList(date); 
     }
 
+    function now(){
+        var now = new Date();
+        return now;
+    }
+
 $(function(){
     dat = new Date();
     //adjustCalendar(dat.getMonth(), dat.getFullYear());
     adjustCalendar(dat);
     cYear = dat.getFullYear();
     cMonth = dat.getMonth();
-    cDay = dat.getDay();
+    cDay = 0;
 
     $("div.add-a-task").click(function(){
         if($("ul.tasks-list li.new-task").length){
@@ -144,7 +153,12 @@ $(function(){
     $("ul.tasks-list").on("keypress", "input.new-task-text", function(e) {
       if(e.which==13){
           text = $(this).val();
-          createTask(text, dat);
+          if(cDay==0){
+            p = "month";   
+          }else{
+            p = "day";   
+          }
+          createTask(text, dat, p);
           updateMonthList(dat.getMonth());
           window.scrollTo(0,document.body.scrollHeight);
       }
@@ -155,13 +169,34 @@ $(function(){
         var d = new Date(cYear,cMonth,day);
         cDay = parseInt(day);
         
-        //alert(d.getWeekOfMonth());
+        /*$("table.calendar tr:not(:eq("+$(this).parent("tr").index()+"))").addClass("invisible");*/
+        
         $("table.calendar").addClass("week-"+d.getWeekOfMonth());
         $("div.calendar-area").height("71px");
         $("table.calendar tr td").removeClass("chosen");
         $(this).addClass("chosen");
         
         updateDayList(d);
+    });
+    
+    $("div.calendar-area").on("swipedown", function(){
+    //Hammer("div.calendar-area").on("swipedown", function(){
+    //$("div.calendar-area").Hammer().on("swipedown", function(){
+    
+        var d = new Date(cYear,cMonth,0);
+        cDay = 0;
+        
+        /*$("table.calendar tr").removeClass("invisible");*/
+        $("table.calendar").removeClass("week-1 week-2 week-3 week-4 week-5 week-6");
+        $("div.calendar-area").height("255px");
+        $("table.calendar tr td").removeClass("chosen");
+        
+        updateMonthList(d);
+    });
+    
+    $('ul.tasks-list').click(function(){
+         
+        
     });
     
 });

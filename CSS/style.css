@@ -58,21 +58,36 @@ table.calendar {
     transition: top 1s;
 }
 
-    table.calendar tr td{
-        height: 44px;
-        width: 14.28%;
-        cursor: pointer;
-        
-        border-radius: 15%;
-        
-        -webkit-transition: background-color 0.5s;
-        transition: background-color 0.5s;
+    table.calendar tr{
+        -webkit-transition: opacity 1s;
+        transition: opacity 1s;
     }
 
-        table.calendar tr td.chosen{
-            background-color: #A8A8A8;
-            border-radius: 15%;
+        table.calendar tr.invisible{
+            opacity: 0;
         }
+
+        table.calendar tr td{
+            height: 44px;
+            width: 14.28%;
+            cursor: pointer;
+
+            border-radius: 15%;
+
+            -webkit-transition: background-color 0.5s;
+            transition: background-color 0.5s;
+        }
+
+            table.calendar tr td.chosen{
+                background-color: #A8A8A8;
+                border-radius: 15%;
+            }
+
+            table.calendar tr td.today{
+                background-color: #E8E8E8;
+                border-radius: 15%;
+            }
+        
 
     table.calendar.week-1{
         top: 23px;
