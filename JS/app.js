@@ -56,7 +56,7 @@ var listaGeral = [{'id': 1,
         }
         node = {  'id': generateUUID(),
                   'title': title,
-                  'date': new Date(date),
+                  'date': new Date(date.getFullYear(),date.getMonth()+1,date.getDate()),
                   'checked': false,
                   'precision': precision
                };
@@ -158,8 +158,8 @@ $(function(){
           }else{
             p = "day";   
           }
-          createTask(text, dat, p);
-          updateMonthList(dat.getMonth());
+          createTask(text, new Date(cYear, cMonth, cDay), p);
+          updateMonthList(new Date(cYear, cMonth, cDay));
           window.scrollTo(0,document.body.scrollHeight);
       }
     });
