@@ -34,12 +34,12 @@ var listaGeral = [{'id': 1,
                   'date': new Date(2014,9,30),
                   'checked': false,
                   'precision':'days'},
-                  {'id': 2,
+                  {'id': 3,
                   'title': "20 de Outubro 2",
                   'date': new Date(2014,9,20),
-                  'checked': false,
+                  'checked': true,
                   'precision':'days'},
-                  {'id': 2,
+                  {'id': 4,
                   'title': "20 de Outubro 3",
                   'date': new Date(2014,10,20),
                   'checked': false,
@@ -67,7 +67,7 @@ var listaGeral = [{'id': 1,
     
     function updateMonthList(d/*month*/){
         d.setMonth(d.getMonth()+1);
-        var c = 0;
+        var c = 0, checked=0;
         var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         //alert(d);
         //$("span.month-name").text(monthList[month]);
@@ -79,8 +79,14 @@ var listaGeral = [{'id': 1,
             //if(listaGeral[i].date.getMonth()==month){
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
-                //if()
-                $("ul.tasks-list").append("<li><input id='"+listaGeral[i].id+"' type='checkbox'>"+listaGeral[i].title+"</li>");
+                if(listaGeral[i].checked){
+                    checked++;
+                }
+                checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
+                li = jQuery("<li></li>").append(checkbox);
+                title = li.append(listaGeral[i].title);
+                $("ul.tasks-list").append(title);
+                //("ul.tasks-list").append("<li><input id='"+listaGeral[i].id+"' type='checkbox'>"+listaGeral[i].title+"</li>");
             }
         }
         if(c==0){
@@ -88,6 +94,8 @@ var listaGeral = [{'id': 1,
         }else{
             $("div.no-tasks").hide();
         }
+        
+        updateProgressBar(0, d.getMonth(), d.getFullYear());
     }
 
     function updateDayList(d){
@@ -111,8 +119,8 @@ var listaGeral = [{'id': 1,
         }else{
            $("div.no-tasks").hide();
         }
+        updateProgressBar(d.getDate(), d.getMonth(), d.getFullYear());
     }
-
 
     function adjustCalendar(date){
         date.setDate(1);
@@ -126,10 +134,48 @@ var listaGeral = [{'id': 1,
         updateMonthList(date); 
     }
 
+    function updateProgressBar(d, m, y){
+        t=0;
+        c=0;
+        for(i=0;i<listaGeral.length;i++){
+            if(d==0 && m==listaGeral[i].date.getMonth() && y==listaGeral[i].date.getFullYear()){
+                t++;
+                if(listaGeral[i].checked){   
+                    c++;
+                }
+            }else if(d==listaGeral[i].date.getDate() && m==listaGeral[i].date.getMonth() && y==listaGeral[i].date.getFullYear()){
+                t++;
+                if(listaGeral[i].checked){   
+                    c++;
+                }
+            }
+        }
+        $("progress.progress").attr("value", c/t);
+    }
+
+    function checked(id){
+        for(i=0;i<listaGeral.length;i++){
+            if(listaGeral[i].id==id){
+                listaGeral[i].checked = true;
+            }
+        }
+    }
+
+    function unchecked(id){
+        for(i=0;i<listaGeral.length;i++){
+            if(listaGeral[i].id==id){
+                listaGeral[i].checked = false;
+            }
+        }
+    }
+
+
     function now(){
         var now = new Date();
         return now;
     }
+
+
 
 $(function(){
     dat = new Date();
@@ -164,6 +210,16 @@ $(function(){
       }
     });
     
+    $("ul.tasks-list").on("click", "input[type=checkbox]", function(e) {
+        //alert($(this).prop("checked"));
+        if($(this).prop("checked")==false){
+            unchecked($(this).attr("id"));
+        }else{
+            checked($(this).attr("id"));
+        }
+        updateProgressBar(cDay, cMonth, cYear);
+    });
+    
     $("table.calendar tr td").click(function(){
         var day = $(this).text();
         var d = new Date(cYear,cMonth,day);
@@ -177,6 +233,7 @@ $(function(){
         $(this).addClass("chosen");
         
         updateDayList(d);
+        updateProgressBar(cDay, cMonth, cYear);
     });
     
     $("div.calendar-area").on("swipedown", function(){
@@ -192,6 +249,8 @@ $(function(){
         $("table.calendar tr td").removeClass("chosen");
         
         updateMonthList(d);
+        updateProgressBar(cDay, cMonth, cYear);
+        
     });
     
     $('ul.tasks-list').click(function(){
