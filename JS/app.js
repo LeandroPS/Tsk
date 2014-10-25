@@ -1,3 +1,17 @@
+jQuery.fn.extend({ 
+        disableSelection : function() { 
+                return this.each(function() { 
+                        this.onselectstart = function() { return false; }; 
+                        this.unselectable = "on"; 
+                        jQuery(this).css('user-select', 'none'); 
+                        jQuery(this).css('-o-user-select', 'none'); 
+                        jQuery(this).css('-moz-user-select', 'none'); 
+                        jQuery(this).css('-khtml-user-select', 'none'); 
+                        jQuery(this).css('-webkit-user-select', 'none'); 
+                }); 
+        } 
+}); 
+
 Date.prototype.getWeekOfMonth = function(exact) {
     var month = this.getMonth()
         , year = this.getFullYear()
@@ -11,6 +25,15 @@ Date.prototype.getWeekOfMonth = function(exact) {
     if (exact || week < 2 + index) return week;
     return week === weeksInMonth ? index + 5 : week;
 };
+
+Date.prototype.countWeeksOfMonth = function() {
+  var year         = this.getFullYear();
+  var month_number = this.getMonth();
+  var firstOfMonth = new Date(year, month_number-1, 1);
+  var lastOfMonth  = new Date(year, month_number, 0);
+  var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
+  return Math.ceil( used / 7);
+}
 
 function generateUUID(){
     var d = new Date().getTime();
@@ -67,11 +90,8 @@ var listaGeral = [{'id': 1,
     
     function updateMonthList(d/*month*/){
         d.setMonth(d.getMonth()+1);
+        
         var c = 0, checked=0;
-        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        //alert(d);
-        //$("span.month-name").text(monthList[month]);
-        $("span.month-name").text(monthList[d.getMonth()]);
         
         $("ul.tasks-list").empty();
 
@@ -79,9 +99,6 @@ var listaGeral = [{'id': 1,
             //if(listaGeral[i].date.getMonth()==month){
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
-                if(listaGeral[i].checked){
-                    checked++;
-                }
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
                 li = jQuery("<li></li>").append(checkbox);
                 title = li.append(listaGeral[i].title);
@@ -100,9 +117,6 @@ var listaGeral = [{'id': 1,
 
     function updateDayList(d){
         var c = 0;
-        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-        $("span.month-name").text(monthList[d.getMonth()]);
         
         $("ul.tasks-list").empty();
 
@@ -110,8 +124,11 @@ var listaGeral = [{'id': 1,
             //if(listaGeral[i].date.getMonth()==month){
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear() && listaGeral[i].date.getDate()==d.getDate()){
                 c++;
-                //if()
-                $("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
+                checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
+                li = jQuery("<li></li>").append(checkbox);
+                title = li.append(listaGeral[i].title);
+                $("ul.tasks-list").append(title);
+                //$("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
             }
         }
         if(c==0){
@@ -122,13 +139,129 @@ var listaGeral = [{'id': 1,
         updateProgressBar(d.getDate(), d.getMonth(), d.getFullYear());
     }
 
+/*
     function adjustCalendar(date){
         date.setDate(1);
         disc = date.getDay();
         date.setDate(0);
         d = date.getDate();
         c=0;
+        
+        console.log(d);
+        
+        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        $("span.month-name").text(monthList[date.getMonth()+1]);
+        
+        $("div.add-a-task").text(date.getMonth()+1);
+        
+        $("table.calendar td").html("");
         for(i=1; i<=d+1;i++){
+            $("table.calendar td").eq(i+disc-1).html(i);
+        }
+        updateMonthList(date); 
+    }
+*/
+
+function calendar(month) {
+
+    //Variables to be used later.  Place holders right now.
+    var padding = "";
+    var totalFeb = "";
+    var i = 1;
+    var testing = "";
+
+    var current = new Date();
+    var cmonth = current.getMonth(); // current (today) month
+    var day = current.getDate();
+    var year = current.getFullYear();
+    var tempMonth = month + 1; //+1; //Used to match up the current month with the correct start date.
+    var prevMonth = month - 1;
+
+    //Determing if Feb has 28 or 29 days in it.  
+    if (month == 1) {
+        if ((year % 100 !== 0) && (year % 4 === 0) || (year % 400 === 0)) {
+            totalFeb = 29;
+        } else {
+            totalFeb = 28;
+        }
+    }
+
+    // Setting up arrays for the name of the months, days, and the number of days in the month.
+    var monthNames = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday"];
+    var totalDays = ["31", "" + totalFeb + "", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
+
+    // Temp values to get the number of days in current month, and previous month. Also getting the day of the week.
+    var tempDate = new Date(tempMonth + ' 1 ,' + year);
+    var tempweekday = tempDate.getDay();
+    var tempweekday2 = tempweekday;
+    var dayAmount = totalDays[month];
+
+    // After getting the first day of the week for the month, padding the other days for that week with the previous months days.  IE, if the first day of the week is on a Thursday, then this fills in Sun - Wed with the last months dates, counting down from the last day on Wed, until Sunday.
+    while (tempweekday > 0) {
+        padding += "<td class='premonth'></td>";
+        //preAmount++;
+        tempweekday--;
+    }
+    // Filling in the calendar with the current month days in the correct location along.
+    while (i <= dayAmount) {
+
+        // Determining when to start a new row
+        if (tempweekday2 > 6) {
+            tempweekday2 = 0;
+            padding += "</tr><tr>";
+        }
+
+        // checking to see if i is equal to the current day, if so then we are making the color of that cell a different color using CSS. Also adding a rollover effect to highlight the day the user rolls over. This loop creates the actual calendar that is displayed.
+        if (i == day && month == cmonth) {
+            padding += "<td class='currentday'  onMouseOver='this.style.background=\"#00FF00\"; this.style.color=\"#FFFFFF\"' onMouseOut='this.style.background=\"#FFFFFF\"; this.style.color=\"#00FF00\"'>" + i + "</td>";
+        } else {
+            padding += "<td class='currentmonth' onMouseOver='this.style.background=\"#00FF00\"' onMouseOut='this.style.background=\"#FFFFFF\"'>" + i + "</td>";
+        }
+        tempweekday2++;
+        i++;
+    }
+
+
+    // Outputing the calendar onto the site.  Also, putting in the month name and days of the week.
+    var calendarTable = "<table class='calendar'> <tr class='currentmonth'><th colspan='7'>" + monthNames[month] + " " + year + "</th></tr>";
+    calendarTable += "<tr class='weekdays'>  <td>Sun</td>  <td>Mon</td> <td>Tues</td> <td>Wed</td> <td>Thurs</td> <td>Fri</td> <td>Sat</td> </tr>";
+    calendarTable += "<tr>";
+    calendarTable += padding;
+    calendarTable += "</tr></table>";
+    document.getElementById("calendar").innerHTML += calendarTable;
+}
+
+    function adjustCalendar(date){
+        month = date.getMonth();
+        year = date.getFullYear();
+        
+        date.setDate(1);
+        disc = date.getDay();
+        date.setDate(0);
+        days_in_month = date.getDate();
+        weeks_in_month=date.countWeeksOfMonth();
+        
+        $("div.calendar-area").removeClass("week-4 week-5 week-6");
+        $("div.calendar-area").addClass("week-"+weeks_in_month);
+        
+        if ((year % 100 !== 0) && (year % 4 === 0) || (year % 400 === 0)) {
+            feb = 29;
+        } else {
+            feb = 28;
+        }
+        
+        console.log("month - "+month+" discount - "+disc);
+        
+        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var days_in_month = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];        
+        
+        $("span.month-name").text(monthList[month]);
+        
+        $("div.add-a-task").text(month);
+        
+        $("table.calendar td").html("");
+        for(i=1; i<=days_in_month[month];i++){
             $("table.calendar td").eq(i+disc-1).html(i);
         }
         updateMonthList(date); 
@@ -150,7 +283,11 @@ var listaGeral = [{'id': 1,
                 }
             }
         }
-        $("progress.progress").attr("value", c/t);
+        if(t==0){
+            $("progress.progress").attr("value", 0);
+        }else{
+            $("progress.progress").attr("value", c/t);
+        }
     }
 
     function checked(id){
@@ -211,7 +348,7 @@ $(function(){
     });
     
     $("ul.tasks-list").on("click", "input[type=checkbox]", function(e) {
-        //alert($(this).prop("checked"));
+        //alert(typeof(cDay));
         if($(this).prop("checked")==false){
             unchecked($(this).attr("id"));
         }else{
@@ -251,6 +388,20 @@ $(function(){
         updateMonthList(d);
         updateProgressBar(cDay, cMonth, cYear);
         
+    });
+    
+    $("div.calendar-area table.calendar").disableSelection();
+    
+    $("div.calendar-area").on("swipeleft", function(){
+        cMonth++;
+        //$("div.add-a-task").text(cMonth);
+        adjustCalendar(new Date(cYear, cMonth, cDay));
+    });
+    
+    $("div.calendar-area").on("swiperight", function(){
+        cMonth--;
+        //$("div.add-a-task").text(cMonth);
+        adjustCalendar(new Date(cYear, cMonth, cDay));
     });
     
     $('ul.tasks-list').click(function(){

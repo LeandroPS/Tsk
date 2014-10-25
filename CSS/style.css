@@ -15,11 +15,25 @@ body{
 div.calendar-area{
     height: 255px;
     position: relative;
-    overflow: hidden;
+    /overflow: hidden;
     
     -webkit-transition: height 1s;
     transition: height 1s;
 }
+
+    div.calendar-area.week-4{
+        height: 211px;
+    }
+
+    div.calendar-area.week-4{
+        height: 255px;
+    }
+
+    div.calendar-area.week-4{
+        height: 299px;
+    }
+
+    
 
 table.week-days{
     width:100%;
@@ -56,6 +70,13 @@ table.calendar {
     
     -webkit-transition: top 1s;
     transition: top 1s;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: moz-none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
     table.calendar tr{
@@ -120,6 +141,39 @@ table.calendar {
     text-align: center;
 }
 
+    .menu {
+        background-image: url(../Images/logo.png);
+        background-size: 100%;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background-color: transparent;
+        left: 10px;
+        position: absolute;
+    }
+
+    .header .left {
+        background-image: url(../Images/left.png);
+        background-size: 100%;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background-color: transparent;
+        left: 52px;
+        position: absolute;
+    }
+
+    .header .right {
+        background-image: url(../Images/right.png);
+        background-size: 100%;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background-color: transparent;
+        right: 52px;
+        position: absolute;
+    }
+
     .header span.month-name{
         font-family: "Roboto Slab";
         font-size: 16pt;
@@ -137,16 +191,6 @@ div.progress-area{
         height: 15px;
     }
 
-.menu {
-    background-image: url(../Images/logo.png);
-    background-size: 100%;
-    width: 42px;
-    height: 42px;
-    border: none;
-    background-color: transparent;
-    left: 10px;
-    position: absolute;
-}
 
 .no-tasks {
     text-align: center;
@@ -192,4 +236,4 @@ div.add-a-task{
     bottom: 15px;
     cursor: pointer;
 }
-        
+    
