@@ -33,6 +33,18 @@ Date.prototype.countWeeksOfMonth = function() {
   var lastOfMonth  = new Date(year, month_number, 0);
   var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
   return Math.ceil( used / 7);
+};
+
+function weekCount(year, month_number) {
+
+    // month_number is in the range 1..12
+
+    var firstOfMonth = new Date(year, month_number-1, 1);
+    var lastOfMonth = new Date(year, month_number, 0);
+
+    var used = firstOfMonth.getDay() + lastOfMonth.getDate();
+
+    return Math.ceil( used / 7);
 }
 
 function generateUUID(){
@@ -240,7 +252,8 @@ function calendar(month) {
         disc = date.getDay();
         date.setDate(0);
         days_in_month = date.getDate();
-        weeks_in_month=date.countWeeksOfMonth();
+        //weeks_in_month=date.countWeeksOfMonth();
+        weeks_in_month =  weekCount(month,year);
         
         $("div.calendar-area").removeClass("week-4 week-5 week-6");
         $("div.calendar-area").addClass("week-"+weeks_in_month);
@@ -257,6 +270,7 @@ function calendar(month) {
         var days_in_month = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];        
         
         $("span.month-name").text(monthList[month]);
+        $("span.year").text(year);
         
         $("div.add-a-task").text(month);
         
@@ -393,15 +407,47 @@ $(function(){
     $("div.calendar-area table.calendar").disableSelection();
     
     $("div.calendar-area").on("swipeleft", function(){
-        cMonth++;
-        //$("div.add-a-task").text(cMonth);
-        adjustCalendar(new Date(cYear, cMonth, cDay));
+        if(cMonth==11){
+            cYear++;
+            cMonth=0;
+        }else{
+            cMonth++;
+        }
+        adjustCalendar(new Date(cYear, cMonth+1, cDay));
     });
     
     $("div.calendar-area").on("swiperight", function(){
-        cMonth--;
+        if(cMonth==0){
+            cYear--;
+            cMonth=11;
+        }else{
+            cMonth--;
+        }
+        adjustCalendar(new Date(cYear, cMonth+1, cDay));
+    });
+    
+    $("button.right").click(function(){
+        if(cMonth==11){
+            cYear++;
+            cMonth=0;
+        }else{
+            cMonth++;
+        }
+        console.log(cMonth);
         //$("div.add-a-task").text(cMonth);
-        adjustCalendar(new Date(cYear, cMonth, cDay));
+        adjustCalendar(new Date(cYear, cMonth+1, cDay));
+    });
+    
+    $("button.left").click(function(){
+        if(cMonth==0){
+            cYear--;
+            cMonth=11;
+        }else{
+            cMonth--;
+        }
+        console.log(cMonth);
+        //$("div.add-a-task").text(cMonth);
+        adjustCalendar(new Date(cYear, cMonth+1, cDay));
     });
     
     $('ul.tasks-list').click(function(){

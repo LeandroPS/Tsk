@@ -180,6 +180,11 @@ table.calendar {
         line-height: 42px;
     }
 
+    .header span.year{
+        border-left: 2px solid;
+        padding-left: 5px;
+    }
+
 div.progress-area{
     position: fixed;
     bottom: 0px;
