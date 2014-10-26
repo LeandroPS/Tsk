@@ -61,14 +61,14 @@ function generateUUID(){
 
 var listaGeral = [{'id': 1,
                   'title': "20 de Outubro",
-                  'date': new Date(2014,9,20),
+                  'date': new Date(2014,9,20,10,20),
                   'checked': false,
                   'precision':'days'},
                   {'id': 2,
                   'title': "30 de outubro (precisão mês)",
                   'date': new Date(2014,9,30),
                   'checked': false,
-                  'precision':'days'},
+                  'precision':'months'},
                   {'id': 3,
                   'title': "20 de Outubro 2",
                   'date': new Date(2014,9,20),
@@ -114,6 +114,9 @@ var listaGeral = [{'id': 1,
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
                 li = jQuery("<li></li>").append(checkbox);
                 title = li.append(listaGeral[i].title);
+                if(listaGeral[i].precision=="days"){
+                    title.append("<span class='day'>"+listaGeral[i].date.getDate()+"</span>");
+                }
                 $("ul.tasks-list").append(title);
                 //("ul.tasks-list").append("<li><input id='"+listaGeral[i].id+"' type='checkbox'>"+listaGeral[i].title+"</li>");
             }
@@ -139,6 +142,10 @@ var listaGeral = [{'id': 1,
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
                 li = jQuery("<li></li>").append(checkbox);
                 title = li.append(listaGeral[i].title);
+                if(listaGeral[i].date.getHours()!=0 || listaGeral[i].date.getMinutes()!=0){
+                    title.append("<span class='time'>"+("0" + listaGeral[i].date.getHours()).slice(-2)+":"+("0" + listaGeral[i].date.getMinutes()).slice(-2)+"</span>");
+                }
+                
                 $("ul.tasks-list").append(title);
                 //$("ul.tasks-list").append("<li><input type='checkbox'>"+listaGeral[i].title+"</li>");
             }
@@ -271,13 +278,19 @@ function calendar(month) {
         
         $("span.month-name").text(monthList[month]);
         $("span.year").text(year);
-        
-        $("div.add-a-task").text(month);
+    
         
         $("table.calendar td").html("");
         for(i=1; i<=days_in_month[month];i++){
             $("table.calendar td").eq(i+disc-1).html(i);
         }
+        
+        $("table.calendar td").removeClass("today");
+        
+        if(month==now().getMonth()){
+            $("table.calendar td").eq(now().getDate()+disc-1).addClass("today");
+        }
+        
         updateMonthList(date); 
     }
 
