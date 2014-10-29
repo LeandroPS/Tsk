@@ -349,6 +349,10 @@ $(function(){
     cMonth = dat.getMonth();
     cDay = 0;
 
+    $("button.menu").click(function(){
+        $("div.menu, div.main").toggleClass("expanded");
+    });
+    
     $("div.add-a-task").click(function(){
         if($("ul.tasks-list li.new-task").length){
             $("ul.tasks-list li.new-task input.new-task-text").focus();

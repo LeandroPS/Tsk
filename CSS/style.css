@@ -8,8 +8,14 @@
     src: url(../Fonts/Roboto_Slab/RobotoSlab-Light.ttf);
 }
 
+body, html{
+    height: 100%;
+    overflow: hidden;
+}
+
 body{
     margin: 0 auto;
+    height: 100%;
 }
 
 div.calendar-area{
@@ -141,7 +147,7 @@ table.calendar {
     text-align: center;
 }
 
-    .menu {
+    button.menu {
         background-image: url(../Images/logo.png);
         background-size: 100%;
         width: 42px;
@@ -154,7 +160,9 @@ table.calendar {
 
     .header .left {
         background-image: url(../Images/left.png);
-        background-size: 100%;
+        background-size: 30px;
+        background-repeat: no-repeat;
+        background-position: center;
         width: 42px;
         height: 42px;
         border: none;
@@ -165,7 +173,9 @@ table.calendar {
 
     .header .right {
         background-image: url(../Images/right.png);
-        background-size: 100%;
+        background-size: 30px;
+        background-repeat: no-repeat;
+        background-position: center;
         width: 42px;
         height: 42px;
         border: none;
@@ -283,3 +293,56 @@ div.add-a-task{
     cursor: pointer;
 }
     
+
+div.menu{
+    height: 100%;
+    width: calc(100% - 52px);
+    border-right: 1px solid;
+    position: absolute;
+    z-index: 3;
+    background-color: #fff;
+    left: calc(-100% + 52px);
+    
+    -webkit-transition: left 1s;
+    transition: left 1s;
+    
+}
+
+    div.menu.expanded{
+        left: 0px;       
+    }
+
+    div.menu input.search {
+        margin: 5px;
+        padding: 5px;
+        width: calc(100% - 24px);
+        border-radius: 4px;
+        border: 1px solid;
+        border-color: grey;
+    }
+
+    div.menu ul.menu-options {
+        padding: 0;
+        font-family: "Roboto Slab", sans-serif;
+    }
+
+        div.menu ul.menu-options li{
+            list-style: none;
+            height: 44px;
+            line-height: 44px;
+            padding-left: 15px;
+            margin: 0px 3px;
+            border-bottom: 1px solid;    
+        }
+
+.main {
+    left: 0px;
+    position: absolute;
+    width: 100%;
+    -webkit-transition: left 1s;
+    transition: left 1s;
+}
+
+    div.main.expanded{
+        left: calc(100% - 52px);       
+    }
