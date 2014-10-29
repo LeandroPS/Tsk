@@ -287,7 +287,7 @@ function calendar(month) {
         
         $("table.calendar td").removeClass("today");
         
-        if(month==now().getMonth()){
+        if(month==now().getMonth() && year==now().getFullYear()){
             $("table.calendar td").eq(now().getDate()+disc-1).addClass("today");
         }
         
