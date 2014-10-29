@@ -10,13 +10,28 @@
 
 body, html{
     height: 100%;
-    overflow: hidden;
+    max-width: 100% !important;
+    overflow-x: hidden;
 }
 
 body{
     margin: 0 auto;
     height: 100%;
 }
+
+
+.main {
+    left: 0px;
+    position: absolute;
+    width: 100%;
+    -webkit-transition: left 1s;
+    transition: left 1s;
+}
+
+    div.main.expanded{
+        left: calc(100% - 62px);       
+    }
+
 
 div.calendar-area{
     height: 255px;
@@ -148,8 +163,11 @@ table.calendar {
 }
 
     button.menu {
-        background-image: url(../Images/logo.png);
-        background-size: 100%;
+        background-image: url(../Images/menu.png);
+        background-size: 35px;
+        background-repeat: no-repeat;
+        background-position: center;
+        outline: none;
         width: 42px;
         height: 42px;
         border: none;
@@ -163,6 +181,7 @@ table.calendar {
         background-size: 30px;
         background-repeat: no-repeat;
         background-position: center;
+        outline: none;
         width: 42px;
         height: 42px;
         border: none;
@@ -176,6 +195,7 @@ table.calendar {
         background-size: 30px;
         background-repeat: no-repeat;
         background-position: center;
+        outline: none;
         width: 42px;
         height: 42px;
         border: none;
@@ -296,12 +316,12 @@ div.add-a-task{
 
 div.menu{
     height: 100%;
-    width: calc(100% - 52px);
+    width: calc(100% - 62px);
     border-right: 1px solid;
     position: absolute;
     z-index: 3;
     background-color: #fff;
-    left: calc(-100% + 52px);
+    left: calc(-100% + 62px);
     
     -webkit-transition: left 1s;
     transition: left 1s;
@@ -316,6 +336,7 @@ div.menu{
         margin: 5px;
         padding: 5px;
         width: calc(100% - 24px);
+        height: 22px;
         border-radius: 4px;
         border: 1px solid;
         border-color: grey;
@@ -324,25 +345,22 @@ div.menu{
     div.menu ul.menu-options {
         padding: 0;
         font-family: "Roboto Slab", sans-serif;
+        margin-top: 0px;
     }
 
         div.menu ul.menu-options li{
             list-style: none;
             height: 44px;
             line-height: 44px;
-            padding-left: 15px;
-            margin: 0px 3px;
-            border-bottom: 1px solid;    
+            padding-left: 55px;
+            margin: 0px 5px;
+            border-bottom: 1px solid;
+            position: relative;    
         }
 
-.main {
-    left: 0px;
+div.menu img.menu-icon {
+    width: 30px;
+    top: 7px;
+    left: 17px;
     position: absolute;
-    width: 100%;
-    -webkit-transition: left 1s;
-    transition: left 1s;
 }
-
-    div.main.expanded{
-        left: calc(100% - 52px);       
-    }
