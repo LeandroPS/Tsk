@@ -287,6 +287,8 @@ ul.tasks-list {
             height: 34px;
             top: 3px;
             border-radius: 5px;
+            width: 34px;
+            text-align: center;
             
             background-color: #adadad;
             color: #E8E8E8;
@@ -358,9 +360,9 @@ div.menu{
             position: relative;    
         }
 
-div.menu img.menu-icon {
-    width: 30px;
-    top: 7px;
-    left: 17px;
-    position: absolute;
-}
+            div.menu ul.menu-options li img.menu-icon {
+                width: 30px;
+                top: 7px;
+                left: 17px;
+                position: absolute;
+            }
