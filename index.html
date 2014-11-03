@@ -9,13 +9,13 @@
     <div class="menu">
         <input type="text" class="search" placeholder="Type to search for your tasks"/>
         <ul class="menu-options">
-            <li><img class="menu-icon" src="Images/Calendar.svg">Calendar</li>
-            <li><img class="menu-icon" src="Images/gear.svg">Settings</li>
-            <li><img class="menu-icon" src="Images/medal.svg">Credits</li>
-            <li><img class="menu-icon" src="Images/donation2.svg">Donate</li>
+            <li class="calendar selected"><img class="menu-icon" src="Images/Calendar.svg">Calendar</li>
+            <li class="settings"><img class="menu-icon" src="Images/gear.svg">Settings</li>
+            <li class="credits"><img class="menu-icon" src="Images/medal.svg">Credits</li>
+            <li class="donate"><img class="menu-icon" src="Images/donation2.svg">Donate</li>
         </ul>
     </div>
-    <div class="main">
+    <div class="main calendar">
         <header class="header">
             <button class="menu"></button>
             <button class="left"></button>
@@ -103,8 +103,48 @@
             + Add a Task
         </div>
         <div class="progress-area">
-            <progress min="0" max="1" value="50" class="progress"></progress>
+            <progress min="0" max="1" value="50" class="progress">                 </progress>
         </div>
+    </div>
+    <div class="main settings expanded">
+        <header class="header">
+            <button class="menu"></button>
+            <span class="title">Settings</span>
+        </header>
+    </div>
+    <div class="main credits expanded">
+        <header class="header">
+            <button class="menu"></button> 
+            <span class="title">Credits</span>
+        </header>
+        <div class="section developer">
+            <span class="developed-by">Developed by</span><br>
+            <img class="developer-img" src="Images/developer.jpg"/><br>
+            <a href="http://twitter.com/leandropsouza" class="link">@leandropsouza</a>
+        </div>
+        <div class="section projects">
+        <span>All the open projects that made this one possible:</span>
+            
+            <ul class="project-list">
+                <li><img src="Images/HTML5_Logo.svg" class="projects-item"></li>
+                <li><img src="Images/brackets logo.png" class="projects-item"></li>
+                <li><img src="Images/GitHub-Mark-120px-plus.png" class="projects-item"></li>
+                <li><img src="Images/jQuery-Logo.png" class="projects-item"></li>
+                <li><img src="Images/jQuery_Mobile-Logo.png" class="projects-item"></li>
+                
+                <li><img src="Images/noun.jpg" class="projects-item"></li>
+            </ul>
+            
+        </div>
+        <div class="section icons">
+            <span>Icons by:</span>
+        </div>
+    </div>
+    <div class="main donate expanded">
+        <header class="header">
+            <button class="menu"></button>
+            <span class="title">Donate</span>
+        </header>
     </div>
     
     <script src="JS/jquery.js"></script>

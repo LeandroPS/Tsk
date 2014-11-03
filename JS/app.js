@@ -353,6 +353,36 @@ $(function(){
         $("div.menu, div.main").toggleClass("expanded");
     });
     
+    $("ul.menu-options li.calendar").click(function(){
+        $("div.main").hide();
+        $("div.main").addClass("expanded");
+        $("div.main.calendar").show();
+        $("div.main.calendar, div.menu").removeClass("expanded");
+            
+    });
+    
+    $("ul.menu-options li.settings").click(function(){
+        $("div.main").hide();
+        $("div.main").addClass("expanded");
+        $("div.main.settings").show();
+        $("div.main.settings, div.menu").toggleClass("expanded");
+    });
+    
+    $("ul.menu-options li.credits").click(function(){
+        $("div.main").hide();
+        $("div.main").addClass("expanded");
+        $("div.main.credits").show();
+        $("div.main.credits, div.menu").removeClass("expanded");
+    });
+    
+    $("ul.menu-options li.donate").click(function(){
+        $("div.main").hide();
+        $("div.main").addClass("expanded");
+        $("div.main.donate").show();
+        $("div.main.donate, div.menu").removeClass("expanded");
+    });
+    
+    
     $("div.add-a-task").click(function(){
         if($("ul.tasks-list li.new-task").length){
             $("ul.tasks-list li.new-task input.new-task-text").focus();

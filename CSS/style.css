@@ -33,6 +33,20 @@ body{
     }
 
 
+div.main.settings {
+    display: none;
+    
+}
+
+div.main.credits {
+    display: none;
+    font-family: "Roboto Slab";
+}
+div.main.donate {
+    display: none;
+    
+}
+
 div.calendar-area{
     height: 255px;
     position: relative;
@@ -204,7 +218,7 @@ table.calendar {
         position: absolute;
     }
 
-    .header span.month-name{
+    .header span.month-name, .header span.title{
         font-family: "Roboto Slab";
         font-size: 16pt;
         line-height: 42px;
@@ -366,3 +380,63 @@ div.menu{
                 left: 17px;
                 position: absolute;
             }
+
+
+.section.developer {
+    text-align: center;
+    padding: 30px 0px;
+    font-family: "Roboto Slab";
+    border-bottom: 3px solid;
+}
+
+.developer-img {
+    width: 90px;
+    height: auto;
+    border-radius: 100%;
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
+
+.section.developer span.developed-by {
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    
+}
+
+.section.developer a.link {
+    text-decoration: none;
+}
+
+.credits .section.projects {
+    padding: 15px;
+    
+    border-bottom: 3px solid;
+}
+
+    .credits .section.projects ul.project-list {
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+        .credits .section.projects ul.project-list li{
+            list-style: none;
+            order: 1;
+            flex-grow: 1;
+            text-align: center;
+            align-self: center;
+            margin-top: 5px;;       
+        }
+
+            .credits .section.projects ul.project-list li .projects-item {
+                width: 100px;
+                top: 50%;
+            }
+
+
+.credits .section.icons {
+    padding: 15px;
+}
+
