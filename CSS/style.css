@@ -272,7 +272,7 @@ ul.tasks-list {
 
     .tasks-list li{
         list-style: none;
-        height: 40px;
+        min-height: 40px;
         line-height: 40px;
         font-family: "Roboto Slab";
         font-size: 12pt;
@@ -290,7 +290,7 @@ ul.tasks-list {
             line-height: 34px;
             right: 5px;
             height: 34px;
-            top: 3px;    
+            top: 3px;
         }
 
         ul.tasks-list li span.day{
@@ -307,6 +307,38 @@ ul.tasks-list {
             background-color: #adadad;
             color: #E8E8E8;
         }
+
+             ul.tasks-list li div.task-options{
+                display: none;   
+             }
+
+             ul.tasks-list li div.task-options-container{
+                 display: flex;
+                 flex-direction: row;
+             }
+
+                ul.tasks-list li div.task-options button{
+                    height: 40px;
+                    flex-grow: 1;
+                    background-color: transparent;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 30px;
+                    border: none;
+                    outline: none;
+                }
+
+                ul.tasks-list li div.task-options button.delete{
+                    background-image: url(../Images/delete.svg);
+                }
+
+                ul.tasks-list li div.task-options button.edit{
+                    background-image: url(../Images/edit.svg);
+                }
+
+                ul.tasks-list li div.task-options button.cal{
+                    background-image: url(../Images/cal.svg);
+                }
     
     ul.tasks-list input.new-task-text{
         border: none;

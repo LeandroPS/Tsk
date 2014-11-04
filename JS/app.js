@@ -112,11 +112,12 @@ var listaGeral = [{'id': 1,
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
-                li = jQuery("<li></li>").append(checkbox);
-                title = li.append(listaGeral[i].title);
+                li = jQuery("<li id="+listaGeral[i].id+"></li>").append(checkbox);
+                title = li.append("<span id="+listaGeral[i].id+">"+listaGeral[i].title+"</span>");
                 if(listaGeral[i].precision=="days"){
                     title.append("<span class='day'>"+listaGeral[i].date.getDate()+"</span>");
                 }
+                title.append("<div class='task-options' id="+listaGeral[i].id+"><div class='task-options-container'><button id="+listaGeral[i].id+" class='delete'></button><button id="+listaGeral[i].id+" class='edit'></button><button id="+listaGeral[i].id+" class='cal'></button></div></div>");
                 $("ul.tasks-list").append(title);
                 //("ul.tasks-list").append("<li><input id='"+listaGeral[i].id+"' type='checkbox'>"+listaGeral[i].title+"</li>");
             }
@@ -180,76 +181,6 @@ var listaGeral = [{'id': 1,
         updateMonthList(date); 
     }
 */
-
-function calendar(month) {
-
-    //Variables to be used later.  Place holders right now.
-    var padding = "";
-    var totalFeb = "";
-    var i = 1;
-    var testing = "";
-
-    var current = new Date();
-    var cmonth = current.getMonth(); // current (today) month
-    var day = current.getDate();
-    var year = current.getFullYear();
-    var tempMonth = month + 1; //+1; //Used to match up the current month with the correct start date.
-    var prevMonth = month - 1;
-
-    //Determing if Feb has 28 or 29 days in it.  
-    if (month == 1) {
-        if ((year % 100 !== 0) && (year % 4 === 0) || (year % 400 === 0)) {
-            totalFeb = 29;
-        } else {
-            totalFeb = 28;
-        }
-    }
-
-    // Setting up arrays for the name of the months, days, and the number of days in the month.
-    var monthNames = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday"];
-    var totalDays = ["31", "" + totalFeb + "", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"];
-
-    // Temp values to get the number of days in current month, and previous month. Also getting the day of the week.
-    var tempDate = new Date(tempMonth + ' 1 ,' + year);
-    var tempweekday = tempDate.getDay();
-    var tempweekday2 = tempweekday;
-    var dayAmount = totalDays[month];
-
-    // After getting the first day of the week for the month, padding the other days for that week with the previous months days.  IE, if the first day of the week is on a Thursday, then this fills in Sun - Wed with the last months dates, counting down from the last day on Wed, until Sunday.
-    while (tempweekday > 0) {
-        padding += "<td class='premonth'></td>";
-        //preAmount++;
-        tempweekday--;
-    }
-    // Filling in the calendar with the current month days in the correct location along.
-    while (i <= dayAmount) {
-
-        // Determining when to start a new row
-        if (tempweekday2 > 6) {
-            tempweekday2 = 0;
-            padding += "</tr><tr>";
-        }
-
-        // checking to see if i is equal to the current day, if so then we are making the color of that cell a different color using CSS. Also adding a rollover effect to highlight the day the user rolls over. This loop creates the actual calendar that is displayed.
-        if (i == day && month == cmonth) {
-            padding += "<td class='currentday'  onMouseOver='this.style.background=\"#00FF00\"; this.style.color=\"#FFFFFF\"' onMouseOut='this.style.background=\"#FFFFFF\"; this.style.color=\"#00FF00\"'>" + i + "</td>";
-        } else {
-            padding += "<td class='currentmonth' onMouseOver='this.style.background=\"#00FF00\"' onMouseOut='this.style.background=\"#FFFFFF\"'>" + i + "</td>";
-        }
-        tempweekday2++;
-        i++;
-    }
-
-
-    // Outputing the calendar onto the site.  Also, putting in the month name and days of the week.
-    var calendarTable = "<table class='calendar'> <tr class='currentmonth'><th colspan='7'>" + monthNames[month] + " " + year + "</th></tr>";
-    calendarTable += "<tr class='weekdays'>  <td>Sun</td>  <td>Mon</td> <td>Tues</td> <td>Wed</td> <td>Thurs</td> <td>Fri</td> <td>Sat</td> </tr>";
-    calendarTable += "<tr>";
-    calendarTable += padding;
-    calendarTable += "</tr></table>";
-    document.getElementById("calendar").innerHTML += calendarTable;
-}
 
     function adjustCalendar(date){
         month = date.getMonth();
@@ -331,6 +262,28 @@ function calendar(month) {
                 listaGeral[i].checked = false;
             }
         }
+    }
+
+    function del(id){
+        var index;
+        
+        for(i=0;i<listaGeral.length;i++){
+            if(listaGeral[i].id==id){
+                index = i;
+            }
+        }
+        listaGeral.splice(index, 1);
+    }
+
+    function edit(id, title){
+        var index;
+        
+        for(i=0;i<listaGeral.length;i++){
+            if(listaGeral[i].id==id){
+                index = i;
+            }
+        }
+        listaGeral[i].title = title;
     }
 
 
@@ -416,6 +369,7 @@ $(function(){
             checked($(this).attr("id"));
         }
         updateProgressBar(cDay, cMonth, cYear);
+        e.stopPropagation();
     });
     
     $("table.calendar tr td").click(function(){
@@ -497,8 +451,30 @@ $(function(){
         adjustCalendar(new Date(cYear, cMonth+1, cDay));
     });
     
-    $('ul.tasks-list').click(function(){
-         
+    $("ul.tasks-list").on("click", "li", function(e) {
+        $("div.task-options").slideUp();
+        id = $(this).attr("id");
+        //alert("div#"+id+".task-options");
+        //$("div#"+id+".task-options").show();
+        $(this).children("div.task-options").slideToggle();
+        
+    });
+    
+    $("ul.tasks-list").on("click", "div.task-options button.delete", function(e) {
+        id = $(this).attr("id");
+        del(id);
+        updateMonthList(new Date(cYear, cMonth, cDay));
+        e.stopPropagation();
+        
+    });
+    
+    $("ul.tasks-list").on("click", "div.task-options button.edit", function(e) {
+        id = $(this).attr("id");
+        $("ul.tasks-list li#"+id+" span")
+        
+        
+        updateMonthList(new Date(cYear, cMonth, cDay));
+        e.stopPropagation();
         
     });
     
