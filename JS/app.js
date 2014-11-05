@@ -452,11 +452,12 @@ $(function(){
     });
     
     $("ul.tasks-list").on("click", "li", function(e) {
-        $("div.task-options").slideUp();
-        id = $(this).attr("id");
-        //alert("div#"+id+".task-options");
-        //$("div#"+id+".task-options").show();
-        $(this).children("div.task-options").slideToggle();
+        if($(this).children("div.task-options").is(":visible")){
+            $(this).children("div.task-options").slideUp();
+        }else{
+           $("div.task-options").slideUp();
+            $(this).children("div.task-options").slideDown(); 
+        }
         
     });
     
@@ -479,6 +480,12 @@ $(function(){
 
     $("ul.tasks-list").on("click","input.edit-input, button", function(e) {
         e.stopPropagation();
+    });
+    
+    $("ul.tasks-list").show().focus().on("focusout", "input.edit-input", function(e) {              text = $(this).val();
+           id = $(this).parent("li").attr("id");
+           edit(id, text);
+           updateMonthList(new Date(cYear, cMonth, cDay));
     });
     
     $("ul.tasks-list").on("click", "div.task-options button.edit", function(e) {
