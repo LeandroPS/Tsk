@@ -276,14 +276,14 @@ var listaGeral = [{'id': 1,
     }
 
     function edit(id, title){
-        var index;
+        var ind;
         
         for(i=0;i<listaGeral.length;i++){
             if(listaGeral[i].id==id){
-                index = i;
+                ind = i;
             }
         }
-        listaGeral[i].title = title;
+        listaGeral[ind].title = title;
     }
 
 
@@ -467,16 +467,19 @@ $(function(){
         e.stopPropagation();
         
     });
-    
-        $("ul.tasks-list").on("keypress","input.edit-input", function(e) {
-          if(e.which==13){
-              alert("pressed");
-              id = $(this).attr("id");
-              text = $(this).val();
-              edit(id, text);
-              updateMonthList(new Date(cYear, cMonth, cDay));
-          }
-        });
+    /*
+    $("ul.tasks-list").on("keypress","input.edit-input", function(e) {
+      if(e.which==13){
+          id = $(this).attr("id");
+          text = $(this).val();
+          edit(id, text);
+          updateMonthList(new Date(cYear, cMonth, cDay));
+      }
+    });*/
+
+    $("ul.tasks-list").on("click","input.edit-input, button", function(e) {
+        e.stopPropagation();
+    });
     
     $("ul.tasks-list").on("click", "div.task-options button.edit", function(e) {
         id = $(this).attr("id");
