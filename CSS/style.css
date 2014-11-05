@@ -340,13 +340,17 @@ ul.tasks-list {
                     background-image: url(../Images/cal.svg);
                 }
     
-    ul.tasks-list input.new-task-text{
+    ul.tasks-list input.new-task-text, input.edit-input{
         border: none;
         background: transparent;
         outline: 0;
         line-height: 30px;
         font-family: "Roboto Slab";
         font-size: 12pt;
+    }
+
+    input.edit-input{
+        display: none;   
     }
 
 div.add-a-task{

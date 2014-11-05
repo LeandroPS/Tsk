@@ -113,7 +113,7 @@ var listaGeral = [{'id': 1,
                 c++;
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
                 li = jQuery("<li id="+listaGeral[i].id+"></li>").append(checkbox);
-                title = li.append("<span id="+listaGeral[i].id+">"+listaGeral[i].title+"</span>");
+                title = li.append("<span class='title'>"+listaGeral[i].title+"</span><input type='text' class='edit-input'>");
                 if(listaGeral[i].precision=="days"){
                     title.append("<span class='day'>"+listaGeral[i].date.getDate()+"</span>");
                 }
@@ -468,12 +468,31 @@ $(function(){
         
     });
     
+        $("ul.tasks-list").on("keypress","input.edit-input", function(e) {
+          if(e.which==13){
+              alert("pressed");
+              id = $(this).attr("id");
+              text = $(this).val();
+              edit(id, text);
+              updateMonthList(new Date(cYear, cMonth, cDay));
+          }
+        });
+    
     $("ul.tasks-list").on("click", "div.task-options button.edit", function(e) {
         id = $(this).attr("id");
-        $("ul.tasks-list li#"+id+" span")
+        text = $("ul.tasks-list li#"+id+" span.title").text();
+        $("ul.tasks-list li#"+id+" input.edit-input").val(text);
+        $("ul.tasks-list li#"+id+" span.title").hide();
+        $("ul.tasks-list li#"+id+" input.edit-input").show().focus().on("keypress", function(e) {
+          if(e.which==13){
+              text = $(this).val();
+              edit(id, text);
+              updateMonthList(new Date(cYear, cMonth, cDay));
+          }
+        });
         
         
-        updateMonthList(new Date(cYear, cMonth, cDay));
+        //updateMonthList(new Date(cYear, cMonth, cDay));
         e.stopPropagation();
         
     });
