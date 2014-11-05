@@ -59,6 +59,13 @@ function generateUUID(){
 
 //var myapp = angular.module("taask");
 
+var listaGeral = [];
+
+d = function(){
+    return new Date(this.d);   
+};
+
+
 var listaGeral = [{'id': 1,
                   'title': "20 de Outubro",
                   'date': new Date(2014,9,20,10,20),
@@ -79,9 +86,14 @@ var listaGeral = [{'id': 1,
                   'date': new Date(2014,10,20),
                   'checked': false,
                   'precision':'days'}
-                 ]
-
-
+                 ];
+/*
+if(localStorage.getItem("taskList")){
+        listaGeral = JSON.parse(localStorage.getItem("taskList"));
+    }else{
+        localStorage.setItem("taskList", "");
+        sync();
+    }*/
 
     function createTask(title, date, precision){
         if(typeof(date)==undefined){
@@ -96,11 +108,12 @@ var listaGeral = [{'id': 1,
                   'precision': precision
                };
         listaGeral.push(node);
+        save();
     }
 
     //function appendNode
     
-    function updateMonthList(d/*month*/){
+    function updateMonthList(d){
         d.setMonth(d.getMonth()+1);
         
         var c = 0, checked=0;
@@ -109,6 +122,7 @@ var listaGeral = [{'id': 1,
 
         for(i=0;i<listaGeral.length;i++){
             //if(listaGeral[i].date.getMonth()==month){
+            console.log(i+ " "+listaGeral[i].date);
             if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
@@ -158,29 +172,6 @@ var listaGeral = [{'id': 1,
         }
         updateProgressBar(d.getDate(), d.getMonth(), d.getFullYear());
     }
-
-/*
-    function adjustCalendar(date){
-        date.setDate(1);
-        disc = date.getDay();
-        date.setDate(0);
-        d = date.getDate();
-        c=0;
-        
-        console.log(d);
-        
-        var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        $("span.month-name").text(monthList[date.getMonth()+1]);
-        
-        $("div.add-a-task").text(date.getMonth()+1);
-        
-        $("table.calendar td").html("");
-        for(i=1; i<=d+1;i++){
-            $("table.calendar td").eq(i+disc-1).html(i);
-        }
-        updateMonthList(date); 
-    }
-*/
 
     function adjustCalendar(date){
         month = date.getMonth();
@@ -254,6 +245,7 @@ var listaGeral = [{'id': 1,
                 listaGeral[i].checked = true;
             }
         }
+        save();
     }
 
     function unchecked(id){
@@ -262,6 +254,7 @@ var listaGeral = [{'id': 1,
                 listaGeral[i].checked = false;
             }
         }
+        save();
     }
 
     function del(id){
@@ -273,6 +266,7 @@ var listaGeral = [{'id': 1,
             }
         }
         listaGeral.splice(index, 1);
+        save();
     }
 
     function edit(id, title){
@@ -284,6 +278,7 @@ var listaGeral = [{'id': 1,
             }
         }
         listaGeral[ind].title = title;
+        save();
     }
 
 
@@ -292,15 +287,33 @@ var listaGeral = [{'id': 1,
         return now;
     }
 
+    function save(){
+       localStorage.setItem("taskList", JSON.stringify(listaGeral));
+    }
 
+    function sync(){
+        
+    }
 
 $(function(){
     dat = new Date();
     //adjustCalendar(dat.getMonth(), dat.getFullYear());
-    adjustCalendar(dat);
     cYear = dat.getFullYear();
     cMonth = dat.getMonth();
     cDay = 0;
+    
+    if(localStorage.getItem("taskList")){
+        listaGeral = JSON.parse(localStorage.getItem("taskList"));
+        for(i=0;i<listaGeral.length;i++){
+            d = listaGeral[i].date;
+            listaGeral[i].date = new Date(d);
+        };
+    }else{
+        localStorage.setItem("taskList", "");
+        sync();
+    }
+    
+    adjustCalendar(dat);
 
     $("button.menu").click(function(){
         $("div.menu, div.main").toggleClass("expanded");
