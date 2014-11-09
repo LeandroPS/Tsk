@@ -476,3 +476,50 @@ div.menu{
     padding: 15px;
 }
 
+.main.login{
+    z-index: 3;
+    background-color: #fff;
+    height: 100%;
+    text-align: center;
+    font-family: "Roboto Slab";
+}
+
+    .main.login img.logo{
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    .main.login span.advice{
+        margin-top: 150px;
+        display: block;
+        margin-left: 5%;
+        width: 90%;
+        margin-bottom: 10px;
+        font-family: "Roboto Slab";
+        font-size: 14px;
+        
+    }
+        
+    .main.login button.auth{
+        display: block;
+        margin-left: 5%;
+        margin-top: 5px;
+        width: 90%;
+        height: 40px;
+        border-radius: 4px;
+        border: 1px solid;
+        background: #fff;
+        border-color: #000;
+        font-family: RobotoSlab;
+    }
+
+    .main.login a.skip{
+        position: absolute;
+        bottom: 5px;
+        right: 10px;
+        bottom: 10px;
+        font-size: 20px;
+        
+        color: #333;
+    }
+

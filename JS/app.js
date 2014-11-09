@@ -65,7 +65,7 @@ d = function(){
     return new Date(this.d);   
 };
 
-
+/*
 var listaGeral = [{'id': 1,
                   'title': "20 de Outubro",
                   'date': new Date(2014,9,20,10,20),
@@ -103,7 +103,7 @@ if(localStorage.getItem("taskList")){
         }
         node = {  'id': generateUUID(),
                   'title': title,
-                  'date': new Date(date.getFullYear(),date.getMonth()+1,date.getDate()),
+                  'date': new Date(date.getFullYear(), date.getMonth() ,date.getDate()),
                   'checked': false,
                   'precision': precision
                };
@@ -114,7 +114,7 @@ if(localStorage.getItem("taskList")){
     //function appendNode
     
     function updateMonthList(d){
-        d.setMonth(d.getMonth()+1);
+        //d.setMonth(d.getMonth()+1);
         
         var c = 0, checked=0;
         
@@ -315,6 +315,11 @@ $(function(){
     
     adjustCalendar(dat);
 
+    $(".main.login a.skip").click(function(){
+        $(".main.login").hide();
+        $(".main.calendar").show();
+    });
+    
     $("button.menu").click(function(){
         $("div.menu, div.main").toggleClass("expanded");
     });
