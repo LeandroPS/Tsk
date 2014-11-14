@@ -523,3 +523,23 @@ div.menu{
         color: #333;
     }
 
+ul.search-result{
+    padding: 5px;
+    font-family: "Roboto Slab";
+}
+    ul.search-result li{
+        list-style: none;
+    }
+
+       ul.search-result li div.date{
+           position: absolute;
+           right: 10px;
+       }
+
+           ul.search-result li div.date span.day{
+
+           }
+
+           ul.search-result li div.date span.month{
+
+           }

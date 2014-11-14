@@ -103,7 +103,7 @@ if(localStorage.getItem("taskList")){
         }
         node = {  'id': generateUUID(),
                   'title': title,
-                  'date': new Date(date.getFullYear(), date.getMonth() ,date.getDate()),
+                  'date': date/*new Date(date.getFullYear(), date.getMonth() ,date.getDate())*/,
                   'checked': false,
                   'precision': precision
                };
@@ -112,6 +112,41 @@ if(localStorage.getItem("taskList")){
     }
 
     //function appendNode
+
+    /***********************
+
+    function updateList(d, p){
+        //d.setMonth(d.getMonth()+1);
+        
+        var c = 0, checked=0;
+        
+        $("ul.tasks-list").empty();
+
+        for(i=0;i<listaGeral.length;i++){
+            //if(listaGeral[i].date.getMonth()==month){
+            console.log(i+ " "+listaGeral[i].date);
+            if((p="day" && listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear())listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
+                c++;
+                checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
+                li = jQuery("<li id="+listaGeral[i].id+"></li>").append(checkbox);
+                title = li.append("<span class='title'>"+listaGeral[i].title+"</span><input type='text' class='edit-input'>");
+                if(listaGeral[i].precision=="days"){
+                    title.append("<span class='day'>"+listaGeral[i].date.getDate()+"</span>");
+                }
+                title.append("<div class='task-options' id="+listaGeral[i].id+"><div class='task-options-container'><button id="+listaGeral[i].id+" class='delete'></button><button id="+listaGeral[i].id+" class='edit'></button><button id="+listaGeral[i].id+" class='cal'></button></div></div>");
+                $("ul.tasks-list").append(title);
+            }
+        }
+        if(c==0){
+            $("div.no-tasks").show();
+        }else{
+            $("div.no-tasks").hide();
+        }
+        
+        updateProgressBar(0, d.getMonth(), d.getFullYear());
+    }
+
+    /************************/
     
     function updateMonthList(d){
         //d.setMonth(d.getMonth()+1);
@@ -123,7 +158,7 @@ if(localStorage.getItem("taskList")){
         for(i=0;i<listaGeral.length;i++){
             //if(listaGeral[i].date.getMonth()==month){
             console.log(i+ " "+listaGeral[i].date);
-            if(listaGeral[i].date.getMonth()==d.getMonth() && listaGeral[i].date.getFullYear()==d.getFullYear()){
+            if(listaGeral[i].date.getMonth()==d.getMonth()+1 && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
                 li = jQuery("<li id="+listaGeral[i].id+"></li>").append(checkbox);
@@ -295,12 +330,26 @@ if(localStorage.getItem("taskList")){
         
     }
 
+    function search(s){
+        var list = [];
+        
+        for(i=0;i<listaGeral.length;i++){
+            str = listaGeral[i].title.toLowerCase();
+            if(str.search(s.toLowerCase())!=-1){
+                list.push(listaGeral[i]);
+            }
+        }
+        console.log(list);
+        return list;
+    }
+
 $(function(){
     dat = new Date();
     //adjustCalendar(dat.getMonth(), dat.getFullYear());
     cYear = dat.getFullYear();
     cMonth = dat.getMonth();
     cDay = 0;
+    context = "month";
     
     if(localStorage.getItem("taskList")){
         listaGeral = JSON.parse(localStorage.getItem("taskList"));
@@ -314,6 +363,38 @@ $(function(){
     }
     
     adjustCalendar(dat);
+    /*
+    $("input.search").click(function(){
+       alert("teste"); 
+    });
+    */
+    $(".menu input.search").keypress(function(){
+        //alert("work");
+        $("ul.search-result").empty();
+        s = $(this).val();
+        mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        if(s!=""){
+            result = search(s);
+            $("ul.search-result").empty();
+            for(i=0;i<result.length;i++){
+                //$("ul.search-result").append("<li>"+result[i].title+"</li>");
+                /**/
+                checkbox = jQuery("<input id='"+result[i].id+"' type='checkbox'>").prop("checked",result[i].checked);
+                li = jQuery("<li></li>").append(checkbox);
+                title = li.append(result[i].title);
+                div = jQuery("<div class='date'></div>");
+                if(result[i].precision=="days"){
+                    div.append("<span class='day'>"+result[i].date.getDate()+"</span>");
+                }
+                div.append("<span class='month'>"+mon[result[i].date.getMonth()]+"</span>");
+                title.append(div);
+                $("ul.search-result").append(title);
+                
+                /**/
+            }
+        }
+        
+    });
 
     $(".main.login a.skip").click(function(){
         $(".main.login").hide();
@@ -373,8 +454,8 @@ $(function(){
           }else{
             p = "day";   
           }
-          createTask(text, new Date(cYear, cMonth, cDay), p);
-          updateMonthList(new Date(cYear, cMonth, cDay));
+          createTask(text, new Date(cYear, cMonth+1, cDay), p);
+          updateMonthList(new Date(cYear, cMonth+1, cDay));
           window.scrollTo(0,document.body.scrollHeight);
       }
     });
@@ -392,8 +473,9 @@ $(function(){
     
     $("table.calendar tr td").click(function(){
         var day = $(this).text();
-        var d = new Date(cYear,cMonth,day);
+        var d = new Date(cYear,cMonth+1,day);
         cDay = parseInt(day);
+        context = "day";
         
         /*$("table.calendar tr:not(:eq("+$(this).parent("tr").index()+"))").addClass("invisible");*/
         
@@ -409,9 +491,10 @@ $(function(){
     $("div.calendar-area").on("swipedown", function(){
     //Hammer("div.calendar-area").on("swipedown", function(){
     //$("div.calendar-area").Hammer().on("swipedown", function(){
-    
+        
         var d = new Date(cYear,cMonth,0);
         cDay = 0;
+        context = "month";
         
         /*$("table.calendar tr").removeClass("invisible");*/
         $("table.calendar").removeClass("week-1 week-2 week-3 week-4 week-5 week-6");
