@@ -95,7 +95,7 @@ if(localStorage.getItem("taskList")){
         sync();
     }*/
 
-    function createTask(title, date, precision){
+    function createMonthTask(title, date, precision){
         if(typeof(date)==undefined){
             
         }else{
@@ -109,6 +109,25 @@ if(localStorage.getItem("taskList")){
                };
         listaGeral.push(node);
         save();
+        updateMonthList(new Date(date.getFullYear(), date.getMonth()-1, date.getDate() ));
+        console.log("month task - "+date);
+    }
+
+    function createDayTask(title, date, precision){
+        if(typeof(date)==undefined){
+            
+        }else{
+               
+        }
+        node = {  'id': generateUUID(),
+                  'title': title,
+                  'date': date/*new Date(date.getFullYear(), date.getMonth() ,date.getDate())*/,
+                  'checked': false,
+                  'precision': precision
+               };
+        listaGeral.push(node);
+        save();
+        updateDayList(date);
     }
 
     //function appendNode
@@ -156,8 +175,6 @@ if(localStorage.getItem("taskList")){
         $("ul.tasks-list").empty();
 
         for(i=0;i<listaGeral.length;i++){
-            //if(listaGeral[i].date.getMonth()==month){
-            console.log(i+ " "+listaGeral[i].date);
             if(listaGeral[i].date.getMonth()==d.getMonth()+1 && listaGeral[i].date.getFullYear()==d.getFullYear()){
                 c++;
                 checkbox = jQuery("<input id='"+listaGeral[i].id+"' type='checkbox'>").prop("checked",listaGeral[i].checked);
@@ -184,6 +201,7 @@ if(localStorage.getItem("taskList")){
         var c = 0;
         
         $("ul.tasks-list").empty();
+        //console.log(d);
 
         for(i=0;i<listaGeral.length;i++){
             //if(listaGeral[i].date.getMonth()==month){
@@ -228,7 +246,7 @@ if(localStorage.getItem("taskList")){
             feb = 28;
         }
         
-        console.log("month - "+month+" discount - "+disc);
+        //console.log("month - "+month+" discount - "+disc);
         
         var monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var days_in_month = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];        
@@ -339,7 +357,6 @@ if(localStorage.getItem("taskList")){
                 list.push(listaGeral[i]);
             }
         }
-        console.log(list);
         return list;
     }
 
@@ -450,12 +467,14 @@ $(function(){
       if(e.which==13){
           text = $(this).val();
           if(cDay==0){
-            p = "month";   
+            p = "month";
+            createMonthTask(text, new Date(cYear, cMonth+1, cDay), p);
           }else{
-            p = "day";   
+            p = "day";
+            createDayTask(text, new Date(cYear, cMonth, cDay), p);
           }
-          createTask(text, new Date(cYear, cMonth+1, cDay), p);
-          updateMonthList(new Date(cYear, cMonth+1, cDay));
+          
+          //updateMonthList(new Date(cYear, cMonth+1, cDay));
           window.scrollTo(0,document.body.scrollHeight);
       }
     });
@@ -473,7 +492,7 @@ $(function(){
     
     $("table.calendar tr td").click(function(){
         var day = $(this).text();
-        var d = new Date(cYear,cMonth+1,day);
+        var d = new Date(cYear,cMonth,day);
         cDay = parseInt(day);
         context = "day";
         
