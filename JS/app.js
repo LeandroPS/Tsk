@@ -13,7 +13,7 @@ jQuery.fn.extend({
 }); 
 
 Date.prototype.getWeekOfMonth = function(exact) {
-    var month = this.getMonth()
+    /*var month = this.getMonth()
         , year = this.getFullYear()
         , firstWeekday = new Date(year, month, 1).getDay()
         , lastDateOfMonth = new Date(year, month + 1, 0).getDate()
@@ -23,16 +23,45 @@ Date.prototype.getWeekOfMonth = function(exact) {
         , week = index + Math.floor(offsetDate / 7)
     ;
     if (exact || week < 2 + index) return week;
-    return week === weeksInMonth ? index + 5 : week;
+    return week === weeksInMonth ? index + 5 : week;*/
+    day = parseInt(this.getDate());
+    di = new Date(this.getFullYear(), this.getMonth(), 1 );
+    disc = parseInt(di.getDay());
+    
+    return (Math.ceil((disc+day)/7));
+    
 };
 
 Date.prototype.countWeeksOfMonth = function() {
-  var year         = this.getFullYear();
-  var month_number = this.getMonth();
-  var firstOfMonth = new Date(year, month_number-1, 1);
-  var lastOfMonth  = new Date(year, month_number, 0);
-  var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
-  return Math.ceil( used / 7);
+  
+    
+    var year         = this.getFullYear();
+    var month_number = this.getMonth();
+    /*
+    var firstOfMonth = new Date(year, month_number-1, 1);
+    var lastOfMonth  = new Date(year, month_number, 0);
+    var used         = firstOfMonth.getDay() + lastOfMonth.getDate();
+    return Math.ceil( used / 7);*/
+    
+    console.log("count"+this);
+    
+    if ((year % 100 !== 0) && (year % 4 === 0) || (year % 400 === 0)) {
+        feb = 29;
+    } else {
+        feb = 28;
+    }
+        
+    //console.log("month - "+month+" discount - "+disc);
+    var days_in_month = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];    
+    
+    //var lastOfMonth  = new Date(year, month_number, 0);
+    //var numberOfDays = lastOfMonth.getDate();
+    preDiscount = new Date(this.getFullYear(), this.getMonth(), 1 );
+    discount = parseInt(preDiscount.getDay());
+    
+    //console.log("month - "+month_number);
+    
+    return (Math.ceil((discount+days_in_month[month_number])/7));
 };
 
 function weekCount(year, month_number) {
@@ -99,7 +128,7 @@ if(localStorage.getItem("taskList")){
         if(typeof(date)==undefined){
             
         }else{
-               
+            
         }
         node = {  'id': generateUUID(),
                   'title': title,
@@ -229,15 +258,18 @@ if(localStorage.getItem("taskList")){
     function adjustCalendar(date){
         month = date.getMonth();
         year = date.getFullYear();
+        weeks_in_month = date.countWeeksOfMonth();
+        console.log("adj - "+date);
         
         date.setDate(1);
         disc = date.getDay();
         date.setDate(0);
         days_in_month = date.getDate();
-        //weeks_in_month=date.countWeeksOfMonth();
-        weeks_in_month =  weekCount(month,year);
+        
+        //weeks_in_month =  weekCount(month,year);
         
         $("div.calendar-area").removeClass("week-4 week-5 week-6");
+        //$("div.calendar-area").addClass("week-"+weeks_in_month);
         $("div.calendar-area").addClass("week-"+weeks_in_month);
         
         if ((year % 100 !== 0) && (year % 4 === 0) || (year % 400 === 0)) {
