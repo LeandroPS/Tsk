@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Tsk</title>
+
+    <!--<link href="lib/ionic/css/ionic.css" rel="stylesheet">-->
+    <link href="css/app.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js
+    <script src="js/app.js"></script>-->
+  </head>
+  <body ng-app="starter">
+<!--
+    <ion-pane>
+      <ion-header-bar class="bar-stable">
+        <h1 class="title">Ionic Blank Starter</h1>
+      </ion-header-bar>
+      <ion-content>
+          -->
+          <div class="menu">
+        <input type="text" class="search" placeholder="Type to search for your tasks"/>
+        <ul class="search-result">
+        
+        </ul>
+        <ul class="menu-options">
+            <li class="calendar selected"><img class="menu-icon" src="Images/Calendar.svg">Calendar</li>
+            <li class="settings"><img class="menu-icon" src="Images/gear.svg">Settings</li>
+            <li class="credits"><img class="menu-icon" src="Images/medal.svg">Credits</li>
+            <li class="donate"><img class="menu-icon" src="Images/donation2.svg">Donate</li>
+        </ul>
+    </div>
+    <div class="main calendar">
+        <header class="header">
+            <button class="menu"></button>
+            <button class="left"></button>
+            
+            <span class="month-name"></span>
+            <span class="year"></span>
+            <button class="right"></button>
+        </header>
+        <div class="calendar-area">
+            <table class="week-days">
+                <tr>
+                    <td>Sun</td>
+                    <td>Mon</td>
+                    <td>Tue</td>
+                    <td>Wed</td>
+                    <td>Thu</td>
+                    <td>Fri</td>
+                    <td>Sat</td>
+                </tr>
+                </table>
+            <table class="calendar">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="task-area">
+            <ul class="tasks-list">
+            
+            </ul>
+            <div class="no-tasks"> No Tasks were found!</div>
+        </div>
+        <div class="add-a-task">
+            + Add a Task
+        </div>
+        <div class="progress-area">
+            <progress min="0" max="1" value="50" class="progress"></progress>
+        </div>
+    </div>
+    <div class="main settings expanded">
+        <header class="header">
+            <button class="menu"></button>
+            <span class="title">Settings</span>
+        </header>
+    </div>
+    <div class="main credits expanded">
+        <header class="header">
+            <button class="menu"></button> 
+            <span class="title">Credits</span>
+        </header>
+        <div class="section developer">
+            <span class="developed-by">Developed by</span><br>
+            <img class="developer-img" src="Images/developer.jpg"/><br>
+            <a href="http://twitter.com/leandropsouza" class="link">@leandropsouza</a>
+        </div>
+        <div class="section projects">
+        <span>All the open projects that made this one possible:</span>
+            
+            <ul class="project-list">
+                <li><img src="Images/HTML5_Logo.svg" class="projects-item"></li>
+                <li><img src="Images/brackets logo.png" class="projects-item"></li>
+                <li><img src="Images/GitHub-Mark-120px-plus.png" class="projects-item"></li>
+                <li><img src="Images/jQuery-Logo.png" class="projects-item"></li>
+                <li><img src="Images/jQuery_Mobile-Logo.png" class="projects-item"></li>
+                
+                <li><img src="Images/noun.jpg" class="projects-item"></li>
+            </ul>
+            
+        </div>
+        <div class="section icons">
+            <span>Icons by:</span>
+        </div>
+    </div>
+    <div class="main donate expanded">
+        <header class="header">
+            <button class="menu"></button>
+            <span class="title">Donate</span>
+        </header>
+    </div>
+    
+    <div class="main login">
+        <img src="images/new-logo.png" class="logo">
+        <br/>
+        <span class="advice">Use your Google Account to keep all your tasks synchronized with other devices</span>
+
+        <span id="signinButton">
+          <span
+            class="g-signin"
+            data-callback="signinCallback"
+            data-clientid="826272787554-1vp04kat2rog483214qb7abgpi35ddee.apps.googleusercontent.com"
+            data-cookiepolicy="single_host_origin"
+            data-requestvisibleactions="http://schema.org/AddAction"
+            data-scope="https://www.googleapis.com/auth/plus.login">
+          </span>
+        </span>
+        <a href="#" class="skip">Skip it</a>
+    </div>
+          
+      <!--</ion-content>
+    </ion-pane>-->
+    <script src="JS/jquery.js"></script>
+    <script src="JS/hammer.min.js"></script>
+    <script src="JS/jquery.hammer.js"></script>
+    <!--<script src="JS/J/jquery.mobile-1.4.4.min.js"></script>-->
+    <script src="JS/jquery.mobile.custom.min.js"></script>
+    <script src="JS/jquery swipe-down-up.js"></script>
+    <script src="JS/drive.js"></script>
+    <script src="JS/jquery.autosize.min.js"></script>
+    <script src="JS/app.js"></script>
+    <script src="JS/app2.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
+  </body>
+</html>
