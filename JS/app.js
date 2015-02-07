@@ -670,4 +670,12 @@ $(function(){
         
     });
     
+    $("input, textarea").blur(function() {
+        $("div.add-a-task div.progress-area").show();
+    });
+
+    $("input, textarea").focus(function() {
+        $("div.add-a-task div.progress-area").hide();
+    });
+    
 });

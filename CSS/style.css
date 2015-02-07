@@ -177,7 +177,7 @@ table.calendar {
 }
 
     button.menu {
-        background-image: url(../Images/menu.png);
+        background-image: url(../Images/menu.svg);
         background-size: 35px;
         background-repeat: no-repeat;
         background-position: center;
